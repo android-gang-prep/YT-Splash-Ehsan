@@ -11,6 +11,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.Animatable as FloatAnimatable
 import androidx.compose.foundation.background
@@ -119,7 +121,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                     LaunchedEffect(Unit) {
-                        delay(200)
+                        delay(400)
                         launch {
                             progressColor.animateTo(Color.White, animationSpec = tween(duration))
                         }
@@ -128,17 +130,21 @@ class MainActivity : ComponentActivity() {
                         }
                         launch {
                             contentWidth.animateTo(expandedProgressWidth.toFloat(), animationSpec = tween(duration, easing = LinearEasing))
-                            contentWidth.animateTo(expandedProgressWidth+iconSize.toFloat(), animationSpec = tween(duration+(duration/1.5).toInt(), easing = LinearEasing))
+                            contentWidth.animateTo(expandedProgressWidth+45f, animationSpec = tween(duration+(duration/1.5).toInt(), easing = LinearEasing))
+//                            contentWidth.animateTo(expandedProgressWidth+iconSize.toFloat(), animationSpec = spring(
+//                                dampingRatio = Spring.DampingRatioMediumBouncy,
+//                                stiffness = duration+(duration/1.5).toFloat(),
+//                            ))
                         }
                         launch {
-                            playIconXOffset.animateTo(maxWidth.value-(400-iconSize.toFloat()), animationSpec = tween(duration))
+                            playIconXOffset.animateTo(maxWidth.value-(400-iconSize.toFloat()+5), animationSpec = tween(duration, easing = LinearEasing))
                         }
                         launch { progressParentRadius.animateTo(0f, tween(duration)) }
                         launch {
                             progressXOffset.animateTo(5f, animationSpec = tween(duration))
                         }
                         launch {
-                            delay((duration/2).toLong())
+                            delay((duration/1.5).toLong())
                             launch {
                                 progress.animateTo(1f, animationSpec = tween(duration))
                                 contentWidth.animateTo(0f, animationSpec = tween(duration))
@@ -146,7 +152,7 @@ class MainActivity : ComponentActivity() {
 
                         }
                         launch {
-                            delay((duration+(duration/1.7)).toLong())
+                            delay((duration+(duration/1.5)).toLong())
                             playIconXOffset.animateTo((maxWidth.value/2)-(iconSize/2f), animationSpec = tween(duration-100))
                             fade.start()
                         }
